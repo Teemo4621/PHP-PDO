@@ -4,15 +4,15 @@
     include_once 'db.php';
     
     if (isset($_POST['login'])) {
-        $email = $_POST['email'];
+        $username = $_POST['username'];
         $password = $_POST['password'];
 
-        if (empty($email)) {
+        if (empty($username)) {
             $_SESSION['error'] = "
                 <script>
                     Swal.fire(
                         'ERROR!',
-                        'กรุณาใส่ Email',
+                        'กรุณาใส่ Username',
                         'error'
                     )
                 </script>
@@ -43,14 +43,14 @@
         } else {
             try {
 
-                $check_data = $conn->prepare("SELECT * FROM users WHERE email = :email");
-                $check_data->bindParam(":email", $email);
+                $check_data = $conn->prepare("SELECT * FROM users WHERE username = :username");
+                $check_data->bindParam(":username", $username);
                 $check_data->execute();
                 $row = $check_data->fetch(PDO::FETCH_ASSOC);
 
                 if ($check_data->rowCount() > 0) {
 
-                    if ($email == $row['email']) {
+                    if ($username == $row['username']) {
                         if (password_verify($password, $row['password'])) {
                             if ($row['urole'] == 'admin') {
                                 $_SESSION['admin_login'] = $row['id'];

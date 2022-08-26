@@ -1,9 +1,9 @@
 <?php
-    session_start();
-    include_once '../services/db.php';
-    if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login'])) {
-        header('Location: ../index.php');
-    }
+session_start();
+include_once '../services/db.php';
+if (!isset($_SESSION['user_login']) && !isset($_SESSION['admin_login'])) {
+    header('Location: ../index.php');
+}
 ?>
 
 <!DOCTYPE html>
@@ -42,17 +42,18 @@
             </form>
             <!--Right-Menu-->
             <ul class="flex h-full items-center ">
-                <?php if (isset($_SESSION['user_login'])) { 
-                        $user_id = $_SESSION['user_login'];
-                        $stmt = $conn->query("SELECT * FROM users WHERE id = $user_id");
-                        $stmt->execute();
-                        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                    ?>
+                <?php if (isset($_SESSION['user_login'])) {
+                    $user_id = $_SESSION['user_login'];
+                    $stmt = $conn->query("SELECT * FROM users WHERE id = $user_id");
+                    $stmt->execute();
+                    $row = $stmt->fetch(PDO::FETCH_ASSOC); ?>
                     <li><a href="Catalog" class="px-3.5 text-white font-medium text-xl font-mono duration-500 hover:text-gray-300"><i class="fa-solid fa-box-open text-lg p-1"></i></a></li>
-                    <li><a href="pages/user_profile.php" class="text-white font-medium pl-1 p-1 duration-500 hover:text-gray-300 hover:opacity-75 uppercase flex items-center"><img type="image" src="image_profile/<?php echo $row['profile_img'];?>" class="w-10 h-10 rounded-full mt-0.5 mr-2"/><?php echo $row['username']; ?></a></li>
+                    <li><a href="user_profile.php" class="text-white font-medium pl-1 p-1 duration-500 hover:text-gray-300 hover:opacity-75 uppercase flex items-center"><img type="image" src="image_profile/<?php echo $row['profile_img']; ?>" class="w-10 h-10 rounded-full mt-0.5 mr-2" /><?php echo $row['username']; ?></a></li>
                 <?php } else { ?>
                     <li><a href="pages\register.php" class="text-white font-medium pl-1 p-1 duration-500 hover:text-gray-300">SingUp</a></li>
-                    <li><p class="text-white font-medium"> │ </p></li>
+                    <li>
+                        <p class="text-white font-medium"> │ </p>
+                    </li>
                     <li><a href="pages\login.php" class="text-white font-medium pl-1 p-1 duration-500 hover:text-gray-300">Login</a></li>
                 <?php } ?>
             </ul>
@@ -65,23 +66,37 @@
             <form method="post" action="../services/profile_db.php" class="edit-from" enctype="multipart/form-data">
                 <h3 class="text-center text-white text-3xl mb-4">เเก้ไขขอมูลส่วนตัว</h3>
                 <!--UploadProfile Box-->
-                <div class="w-2/6 h-64 m-auto">
-                    <img src="image_profile/<?php echo $row['profile_img'];?>" class="rounded-full w-4/5 h-4/5 m-auto" alt="">
-                    <input type="file" name="uploadImg" accept="image/png image/gif image/jpeg image/jetty" class="block w-full mt-2 text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-dark hover:file:bg-violet-100">
+                <div class="w-2/6  m-auto">
+                    <div class="w-44 h-44 m-auto relative">
+                        <img name="image_profile" id="imageProfile" src="image_profile/<?php echo $row['profile_img']; ?>" class="rounded-full m-auto bg-cover bg-no-repeat bg-center w-full h-full truncate" alt="">
+                        <div class="bg-gray-400 rounded-full truncate w-10 h-10 absolute bottom-0 right-1 text-center hover:bg-gray-500 hover:text-gray-300 duration-500">
+                            <i class="fa-solid fa-camera text-center w-4 h-4 pt-3 text-white " aria-hidden="true"></i>
+                            <input type="file" name="uploadImg" id="uploadImgBtn" accept="image/png, image/gif, image/jpeg, image/jetty" class="absolute opacity-0" style="transform: scale(2.1);">
+                        </div>
+                    </div>
+                    <script>
+                        document.getElementById("uploadImgBtn").onchange = function() {
+                            document.getElementById("imageProfile").src = URL.createObjectURL(uploadImgBtn.files[0]);
+                        }
+                    </script>
                 </div>
                 <!--EditDataInput-->
                 <div class="my-4 mx-2">
                     <div class="mt-4">
-                        <p class="text-white text-sm">เปลี่ยน Username</p>
-                        <input type="text" placeholder="Username" name="username" class="px-2 py-0.5" value="<?php echo $row['username']; ?>"/>
+                        <p class="text-white text-sm">Username:</p>
+                        <input type="text" placeholder="Username" name="username" class="px-2 py-0.5 w-2/6 h-8 rounded-md" value="<?php echo $row['username']; ?>" />
                     </div>
                     <div class="mt-4">
-                        <p class="text-white text-sm">เปลี่ยน Password</p>
-                        <input type="password" placeholder="Password" name="username" class="px-2 py-0.5"/>
+                        <p class="text-white text-sm">Password ยืนยันรหัสผ่านปัจจุบัน:</p>
+                        <input type="password" placeholder="Password" name="username" class="px-2 py-0.5 w-2/6 h-8 rounded-md" />
                     </div>
                     <div class="mt-4">
-                        <p class="text-white text-sm">ยืนยัน Password อีกครั้ง</p>
-                        <input type="password" placeholder="Confirm Password" name="username" class="px-2 py-0.5"/>
+                        <p class="text-white text-sm">New Password รหัสผ่านใหม่:</p>
+                        <input type="password" placeholder="Confirm Password" name="username" class="px-2 py-0.5 w-2/6 h-8 rounded-md" />
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-white text-sm">Confirm password ยืนยันรหัสผ่านใหม่:</p>
+                        <input type="password" placeholder="Password" name="username" class="px-2 py-0.5 w-2/6 h-8 rounded-md" />
                     </div>
                 </div>
                 <!--LogoutButton-->

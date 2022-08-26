@@ -90,17 +90,17 @@ if (isset($_POST['register'])) {
     } else {
         try {
 
-            $check_email = $conn->prepare("SELECT email FROM users WHERE email = :email");
-            $check_email->bindParam(":email", $email);
-            $check_email->execute();
-            $row = $check_email->fetch(PDO::FETCH_ASSOC);
+            $check_username = $conn->prepare("SELECT username FROM users WHERE username = :username");
+            $check_username->bindParam(":username", $username);
+            $check_username->execute();
+            $row = $check_username->fetch(PDO::FETCH_ASSOC);
 
-            if ($row['email'] == $email) {
+            if ($row['username'] == $username) {
                 $_SESSION['error'] = "
                     <script>
                         Swal.fire(
                             'ERROR!',
-                            'มี Email อยู่ในระบบเเล้ว',
+                            'มี Username อยู่ในระบบเเล้ว',
                             'error'
                         )
                     </script>

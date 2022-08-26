@@ -39,7 +39,7 @@
                     <!--email-Input-->
                     <div class="flex content-center px-4 mb-4">
                         <div class="rounded-l-lg bg-gray-400 w-8"><i class="fa-solid fa-user mt-2 text-white"></i></div>
-                        <input type="text" class="w-full h-8 p-1 rounded-r-lg" placeholder="Email" name="email"/>
+                        <input type="text" class="w-full h-8 p-1 rounded-r-lg" placeholder="Username" name="username"/>
                     </div>
                     <!--Password-Input-->
                     <div class="flex content-center px-4 mb-4">
