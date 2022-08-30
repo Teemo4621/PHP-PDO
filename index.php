@@ -27,8 +27,26 @@ include_once 'services/db.php';
             <ul class="flex h-full items-center float-left">
                 <li><a href="\ZEMONWeb\index.php" class="px-3.5 text-white font-medium text-xl font-mono duration-500 hover:text-gray-300"><i class="fa-solid fa-house text-lg p-1"></i>Home</a></li>
                 <li><a href="Shop" class="px-3.5 text-white font-medium text-xl font-mono duration-500 hover:text-gray-300"><i class="fa-solid fa-shop text-lg p-1"></i>Shop</a></li>
-                <li><a href="Category" class="px-3.5 text-white font-medium text-xl font-mono duration-500 hover:text-gray-300"><i class="fa-solid fa-caret-down text-lg p-1"></i>Category</a></li>
+                <li class="relative"><button id="dropdown-category" class="px-3.5 text-white font-medium text-xl font-mono duration-500 hover:text-gray-300" style="cursor: pointer;"><i class="fa-solid fa-caret-down text-lg p-1"></i>Category</button>
+                    <div class="z-10 bg-gray-300 w-28 absolute top-12 left-4 rounded-md truncate dropdown-menu duration-500" style="display: none; cursor: pointer;" id="category-menu">
+                        <a href="" class="w-full p-2 flex rounded-sm hover:bg-gray-400 duration-500">Robux</a>
+                        <a href="" class="w-full p-2 flex rounded-sm hover:bg-gray-400 duration-500">All Item</a>
+                        <a href="" class="w-full p-2 flex rounded-sm hover:bg-gray-400 duration-500">Buy ID</a>
+                    </div>
+                </li>
             </ul>
+            <script>
+                let clickonmenu = document.getElementById("dropdown-category");
+                let menu = document.getElementById("category-menu");
+
+                clickonmenu.addEventListener("click", function() {
+                    if (menu.style.display == "none") {
+                        menu.style.display = "block";
+                    } else {
+                        menu.style.display = "none";
+                    }
+                });
+            </script>
             <!--SearchBar-->
             <form class="flex w-1/4 text-center items-center align-center justify-center ml-auto" method="post" action="">
                 <label class="relative block">
@@ -41,17 +59,39 @@ include_once 'services/db.php';
             </form>
             <!--Right-Menu-->
             <ul class="flex h-full items-center ">
-                <?php if (isset($_SESSION['user_login'])) { 
+                <?php if (isset($_SESSION['user_login'])) {
                     $user_id = $_SESSION['user_login'];
                     $stmt = $conn->query("SELECT * FROM users WHERE id = $user_id");
                     $stmt->execute();
                     $row = $stmt->fetch(PDO::FETCH_ASSOC);
                 ?>
                     <li><a href="Catalog" class="px-3.5 text-white font-medium text-xl font-mono duration-500 hover:text-gray-300"><i class="fa-solid fa-box-open text-lg p-1"></i></a></li>
-                    <li><a href="pages/user_profile.php" class="text-white font-medium pl-1 p-1 duration-500 hover:text-gray-300 hover:opacity-75 uppercase flex items-center"><img type="image" src="pages/image_profile/<?php echo $row['profile_img'];?>" class="w-10 h-10 rounded-full mt-0.5 mr-2"/><?php echo $row['username']; ?></a></li>
+                    <li class="relative text-white font-medium pl-1 p-1 duration-500 uppercase flex items-center" style="cursor: pointer;" id="dropdown-menu-user"><img type="image" src="pages/image_profile/<?php echo $row['profile_img']; ?>" class="w-10 h-10 rounded-full mt-0.5 mr-2" /><?php echo $row['username']; ?>
+                        <div class="z-10 bg-gray-300 w-34 absolute top-12 left-4 rounded-md truncate dropdown-menu duration-500" style="display: none; cursor: pointer;" id="user-menu">
+                            <a href="#" class="w-full p-2 flex hover:bg-gray-400 text-black rounded-sm duration-500">ชื่อผู้ใช้ : <?php echo $row['username'] ?></a>
+                            <a href="#" class="w-full p-2 flex hover:bg-gray-400 text-black rounded-sm duration-500">จำนวนเครดิต : 0</a>
+                            <a href="pages/account/user_profile.php" class="w-full p-2 flex hover:bg-gray-400 text-black rounded-sm duration-500">ขอมูลส่วนตัว</a>
+                            <form action="services/profile_db.php" method="post">
+                            <button type="submit" name="logout" class="p-2 bottom-5 w-full bg-red-200 boder-red-400 text-white font-bold hover:text-gray-200 hover:bg-red-500 duration-500 ease-in-out transition">ออกจากระบบ</button>
+                        </div>
+                    </li>
+                    <script>
+                        let clickonusermenu = document.getElementById("dropdown-menu-user");
+                        let usermenu = document.getElementById("user-menu");
+
+                        clickonusermenu.addEventListener("click", function() {
+                            if (usermenu.style.display == "none") {
+                                usermenu.style.display = "block";
+                            } else {
+                                usermenu.style.display = "none";
+                            }
+                        });
+                    </script>
                 <?php } else { ?>
                     <li><a href="pages/register.php" class="text-white font-medium pl-1 p-1 duration-500 hover:text-gray-300">SingUp</a></li>
-                    <li><p class="text-white font-medium"> │ </p></li>
+                    <li>
+                        <p class="text-white font-medium"> │ </p>
+                    </li>
                     <li><a href="pages/login.php" class="text-white font-medium pl-1 p-1 duration-500 hover:text-gray-300">Login</a></li>
                 <?php } ?>
             </ul>
