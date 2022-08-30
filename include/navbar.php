@@ -1,4 +1,3 @@
-
     <!---Navbar--->
     <div class="w-full h-20 bg-neutral-800 ">
         <div class="row w-3/4 h-full m-auto flex items-center align-center">
