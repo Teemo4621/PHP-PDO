@@ -28,7 +28,7 @@ include_once 'services/db.php';
                 <li><a href="\ZEMONWeb\index.php" class="px-3.5 text-white font-medium text-xl font-mono duration-500 hover:text-gray-300"><i class="fa-solid fa-house text-lg p-1"></i>Home</a></li>
                 <li><a href="Shop" class="px-3.5 text-white font-medium text-xl font-mono duration-500 hover:text-gray-300"><i class="fa-solid fa-shop text-lg p-1"></i>Shop</a></li>
                 <li class="relative"><button id="dropdown-category" class="px-3.5 text-white font-medium text-xl font-mono duration-500 hover:text-gray-300" style="cursor: pointer;"><i class="fa-solid fa-caret-down text-lg p-1"></i>Category</button>
-                    <div class="z-10 bg-gray-300 w-28 absolute top-12 left-4 rounded-md truncate dropdown-menu duration-500" style="display: none; cursor: pointer;" id="category-menu">
+                    <div class="z-10 bg-gray-300 w-28 absolute top-12 left-4 rounded-md truncate dropdown-menu duration-500 hidden" style="cursor: pointer;" id="category-menu">
                         <a href="" class="w-full p-2 flex rounded-sm hover:bg-gray-400 duration-500">Robux</a>
                         <a href="" class="w-full p-2 flex rounded-sm hover:bg-gray-400 duration-500">All Item</a>
                         <a href="" class="w-full p-2 flex rounded-sm hover:bg-gray-400 duration-500">Buy ID</a>
@@ -36,15 +36,8 @@ include_once 'services/db.php';
                 </li>
             </ul>
             <script>
-                let clickonmenu = document.getElementById("dropdown-category");
-                let menu = document.getElementById("category-menu");
-
-                clickonmenu.addEventListener("click", function() {
-                    if (menu.style.display == "none") {
-                        menu.style.display = "block";
-                    } else {
-                        menu.style.display = "none";
-                    }
+                let clickonmenu = document.getElementById("dropdown-category").addEventListener("click", () => {
+                    let menu = document.getElementById("category-menu").classList.toggle("hidden");
                 });
             </script>
             <!--SearchBar-->
@@ -67,24 +60,18 @@ include_once 'services/db.php';
                 ?>
                     <li><a href="Catalog" class="px-3.5 text-white font-medium text-xl font-mono duration-500 hover:text-gray-300"><i class="fa-solid fa-box-open text-lg p-1"></i></a></li>
                     <li class="relative text-white font-medium pl-1 p-1 duration-500 uppercase flex items-center" style="cursor: pointer;" id="dropdown-menu-user"><img type="image" src="pages/image_profile/<?php echo $row['profile_img']; ?>" class="w-10 h-10 rounded-full mt-0.5 mr-2" /><?php echo $row['username']; ?>
-                        <div class="z-10 bg-gray-300 w-34 absolute top-12 left-4 rounded-md truncate dropdown-menu duration-500" style="display: none; cursor: pointer;" id="user-menu">
+                        <div class="z-10 bg-gray-300 w-34 absolute top-12 left-4 rounded-md truncate dropdown-menu duration-500 hidden" style="cursor: pointer;" id="user-menu">
                             <a href="#" class="w-full p-2 flex hover:bg-gray-400 text-black rounded-sm duration-500">ชื่อผู้ใช้ : <?php echo $row['username'] ?></a>
                             <a href="#" class="w-full p-2 flex hover:bg-gray-400 text-black rounded-sm duration-500">จำนวนเครดิต : 0</a>
                             <a href="pages/account/user_profile.php" class="w-full p-2 flex hover:bg-gray-400 text-black rounded-sm duration-500">ขอมูลส่วนตัว</a>
                             <form action="services/profile_db.php" method="post">
-                            <button type="submit" name="logout" class="p-2 bottom-5 w-full bg-red-200 boder-red-400 text-white font-bold hover:text-gray-200 hover:bg-red-500 duration-500 ease-in-out transition">ออกจากระบบ</button>
+                                <button type="submit" name="logout" class="p-2 bottom-5 w-full bg-red-200 boder-red-400 text-white font-bold hover:text-gray-200 hover:bg-red-500 duration-500 ease-in-out transition">ออกจากระบบ</button>
+                            </form>
                         </div>
                     </li>
                     <script>
-                        let clickonusermenu = document.getElementById("dropdown-menu-user");
-                        let usermenu = document.getElementById("user-menu");
-
-                        clickonusermenu.addEventListener("click", function() {
-                            if (usermenu.style.display == "none") {
-                                usermenu.style.display = "block";
-                            } else {
-                                usermenu.style.display = "none";
-                            }
+                        let clickonusermenu = document.getElementById("dropdown-menu-user").addEventListener("click", () => {
+                            let usermenu = document.getElementById("user-menu").classList.toggle("hidden");
                         });
                     </script>
                 <?php } else { ?>
