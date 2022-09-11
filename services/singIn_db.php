@@ -55,11 +55,11 @@
                             if ($row['urole'] == 'admin') {
                                 $_SESSION['admin_login'] = $row['id'];
                                 $_SESSION['success'];
-                                header("location: ../admin/deshbord/index.php");
+                                header("location: ../admin/index.php");
                             } else {
                                 $_SESSION['user_login'] = $row['id'];
                                 $_SESSION['success'];
-                                header("location: ../index.php");
+                                header("location: ../");
                             }
                         } else {
                             $_SESSION['error'] = "

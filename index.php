@@ -2,9 +2,19 @@
 
 session_start();
 include_once 'services/db.php';
+if (isset($_SESSION['user_login'])) {
+    $user_id = $_SESSION['user_login'];
+    $stmt = $conn->query("SELECT * FROM users WHERE id = $user_id");
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+} else if ((isset($_SESSION['admin_login']))) {
+    $admin_id = $_SESSION['admin_login'];
+    $stmt = $conn->query("SELECT * FROM users WHERE id = $admin_id");
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+}
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,30 +26,28 @@ include_once 'services/db.php';
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://kit.fontawesome.com/0cfafdce5f.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="swiper-bundle.min.css">
+    <script src="swiper-bundle.min.js"></script>
+    <link rel="stylesheet" href="css/zemonStyle.css">
 </head>
 
 <body>
 
     <!---Navbar--->
     <div class="w-full h-20 bg-neutral-800 ">
-        <div class="row w-3/4 h-full m-auto flex items-center align-center" style="max-width: 1080px;">
+        <div class="nav row w-3/4 h-full m-auto flex items-center align-center" style="max-width: 1080px;">
             <!--Left-Menu-->
             <ul class="flex h-full items-center float-left">
-                <li><a href="\ZEMONWeb\index.php" class="px-3.5 text-white font-medium text-xl font-mono duration-500 hover:text-gray-300"><i class="fa-solid fa-house text-lg p-1"></i>Home</a></li>
-                <li><a href="Shop" class="px-3.5 text-white font-medium text-xl font-mono duration-500 hover:text-gray-300"><i class="fa-solid fa-shop text-lg p-1"></i>Shop</a></li>
-                <li class="relative"><button id="dropdown-category" class="px-3.5 text-white font-medium text-xl font-mono duration-500 hover:text-gray-300" style="cursor: pointer;"><i class="fa-solid fa-caret-down text-lg p-1"></i>Category</button>
-                    <div class="z-10 bg-gray-300 w-28 absolute top-12 left-4 rounded-md truncate dropdown-menu duration-500 hidden" style="cursor: pointer;" id="category-menu">
+                <li><a href="\ZEMONWeb\index.php" class="nav px-3.5 text-white font-medium text-xl font-mono duration-500 hover:text-gray-300"><i class="fa-solid fa-house text-lg p-1"></i>Home</a></li>
+                <li><a href="Shop" class="category px-3.5 text-white font-medium text-xl font-mono duration-500 hover:text-gray-300"><i class="fa-solid fa-shop text-lg p-1"></i>Shop</a></li>
+                <li class="relative"><button class="dropdown h-14 px-3.5 text-white font-medium text-xl font-mono hover:text-gray-300 duration-500" style="cursor: pointer;">Category<i class="fa-solid fa-caret-down text-lg p-1 dropdown-category"></i></button>
+                    <ul class="menu z-10 bg-gray-300 w-28 absolute top-12 left-4 rounded-md truncate duration-500" style="cursor: pointer;" id="category-menu">
                         <a href="" class="w-full p-2 flex rounded-sm hover:bg-gray-400 duration-500">Robux</a>
                         <a href="" class="w-full p-2 flex rounded-sm hover:bg-gray-400 duration-500">All Item</a>
                         <a href="" class="w-full p-2 flex rounded-sm hover:bg-gray-400 duration-500">Buy ID</a>
-                    </div>
+                    </ul>
                 </li>
             </ul>
-            <script>
-                let clickonmenu = document.getElementById("dropdown-category").addEventListener("click", () => {
-                    let menu = document.getElementById("category-menu").classList.toggle("hidden");
-                });
-            </script>
             <!--SearchBar-->
             <form class="flex w-1/4 text-center items-center align-center justify-center ml-auto" method="post" action="">
                 <label class="relative block">
@@ -51,29 +59,31 @@ include_once 'services/db.php';
                 </label>
             </form>
             <!--Right-Menu-->
-            <ul class="flex h-full items-center ">
-                <?php if (isset($_SESSION['user_login'])) {
-                    $user_id = $_SESSION['user_login'];
-                    $stmt = $conn->query("SELECT * FROM users WHERE id = $user_id");
-                    $stmt->execute();
-                    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                ?>
-                    <li><a href="Catalog" class="px-3.5 text-white font-medium text-xl font-mono duration-500 hover:text-gray-300"><i class="fa-solid fa-box-open text-lg p-1"></i></a></li>
-                    <li class="relative text-white font-medium pl-1 p-1 duration-500 uppercase flex items-center" style="cursor: pointer;" id="dropdown-menu-user"><img type="image" src="pages/image_profile/<?php echo $row['profile_img']; ?>" class="w-10 h-10 rounded-full mt-0.5 mr-2" /><?php echo $row['username']; ?>
-                        <div class="z-10 bg-gray-300 w-34 absolute top-12 left-4 rounded-md truncate dropdown-menu duration-500 hidden" style="cursor: pointer;" id="user-menu">
-                            <a href="#" class="w-full p-2 flex hover:bg-gray-400 text-black rounded-sm duration-500">ชื่อผู้ใช้ : <?php echo $row['username'] ?></a>
-                            <a href="#" class="w-full p-2 flex hover:bg-gray-400 text-black rounded-sm duration-500">จำนวนเครดิต : 0</a>
-                            <a href="pages/account/user_profile.php" class="w-full p-2 flex hover:bg-gray-400 text-black rounded-sm duration-500">ขอมูลส่วนตัว</a>
-                            <form action="services/profile_db.php" method="post">
-                                <button type="submit" name="logout" class="p-2 bottom-5 w-full bg-red-200 boder-red-400 text-white font-bold hover:text-gray-200 hover:bg-red-500 duration-500 ease-in-out transition">ออกจากระบบ</button>
-                            </form>
-                        </div>
-                    </li>
-                    <script>
-                        let clickonusermenu = document.getElementById("dropdown-menu-user").addEventListener("click", () => {
-                            let usermenu = document.getElementById("user-menu").classList.toggle("hidden");
-                        });
-                    </script>
+            <ul class="flex h-full items-center">
+                <?php if (isset($_SESSION['user_login']) | (isset($_SESSION['admin_login']))) { ?>
+                    <?php if (isset($_SESSION['admin_login'])) { ?>
+                        <li class="dropdown relative text-red-500 font-medium pl-1 p-1 duration-200 uppercase flex items-center hover:text-red-300" style="cursor: pointer;"><img type="image" src="pages/image_profile/<?php echo $row['profile_img']; ?>" class="w-10 h-10 rounded-full mt-0.5 mr-2" />ADMIN<i class="fa-solid fa-caret-down text-lg p-1 text-white"></i>
+                            <ul class="menu z-10 bg-gray-300 w-34 absolute top-12 left-4 rounded-md truncate duration-200 z-10" style="cursor: pointer;">
+                                <a href="#" class="w-full p-2 flex hover:bg-gray-400 text-black rounded-sm duration-200">ชื่อADMIN : <?php echo $row['username'] ?></a>
+                                <a href="admin/index.php" class="w-full p-2 flex hover:bg-gray-400 text-black rounded-sm duration-200">หน้า Deshbord</a>
+                                <form action="services/profile_db.php" method="post">
+                                    <button type="submit" name="logout" class="p-2 bottom-5 w-full bg-red-200 boder-red-400 text-white font-bold hover:text-gray-200 hover:bg-red-500 duration-500 ease-in-out transition">ออกจากระบบ</button>
+                                </form>
+                            </ul>
+                        </li>
+                    <?php } else if (isset($_SESSION['user_login'])) { ?>
+                        <li class="dropdown relative text-white font-medium pl-1 p-1 duration-200 uppercase flex items-center hover:text-gray-300" style="cursor: pointer;"><img type="image" src="pages/image_profile/<?php echo $row['profile_img']; ?>" class="w-10 h-10 rounded-full mt-0.5 mr-2" /><?php echo $row['username']; ?><i class="fa-solid fa-caret-down text-lg p-1"></i>
+                            <div class="menu z-10 bg-gray-300 w-34 absolute top-12 left-4 rounded-md truncate dropdown-user-menu menu duration-200 z-10" style="cursor: pointer;">
+                                <a href="#" class="w-full p-2 flex hover:bg-gray-400 text-black rounded-sm duration-200">ชื่อผู้ใช้ : <?php echo $row['username'] ?></a>
+                                <a href="#" class="w-full p-2 flex hover:bg-gray-400 text-black rounded-sm duration-200">จำนวนเครดิต : 0</a>
+                                <a href="#" class="w-full p-2 flex hover:bg-gray-400 text-black rounded-sm duration-200">ประวัติการซื้อ</a>
+                                <a href="pages/account/user_profile.php" class="w-full p-2 flex hover:bg-gray-400 text-black rounded-sm duration-200">ขอมูลส่วนตัว</a>
+                                <form action="services/profile_db.php" method="post">
+                                    <button type="submit" name="logout" class="p-2 bottom-5 w-full bg-red-200 boder-red-400 text-white font-bold hover:text-gray-200 hover:bg-red-500 duration-500 ease-in-out transition">ออกจากระบบ</button>
+                                </form>
+                            </div>
+                        </li>
+                    <?php } ?>
                 <?php } else { ?>
                     <li><a href="pages/register.php" class="text-white font-medium pl-1 p-1 duration-500 hover:text-gray-300">SingUp</a></li>
                     <li>
@@ -84,6 +94,25 @@ include_once 'services/db.php';
             </ul>
         </div>
     </div>
+
+    <!--- Container --->
+    <div class="">
+        <div class="">
+            <!--- Swipper Image --->
+            <div class="swiper sliderImage">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><img src="image/glenn-carstens-peters-0woyPEJQ7jc-unsplash.jpg" alt=""></div>
+                    <div class="swiper-slide"><img src="image/jeshoots-com-eCktzGjC-iU-unsplash.jpg" alt=""></div>
+                    <div class="swiper-slide"><img src="image/nassim-allia-ot-HSrLNTP0-unsplash.jpg" alt=""></div>
+                </div>
+                <div class="swiper-button-next swiper-btn"></div>
+                <div class="swiper-button-prev swiper-btn"></div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </div>
+    <script src="js/script.js"></script>
+
 </body>
 
 </html>

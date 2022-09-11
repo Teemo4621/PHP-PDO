@@ -59,7 +59,7 @@
                     <!--Submit-Form-->
                     <div class="px-4">
                         <button type="submit" name="register" class="w-full text-white px-2 py-2 rounded-lg bg-blue-700 hover:bg-blue-800 duration-500"><i class="fa-solid fa-right-to-bracket text-white"></i>Register</button>
-                        <p class="font-lg text-white ">You don't have an account yet? Click <a href="register.php" class="text-blue-500">here</a>  for Singup</p>
+                        <p class="font-lg text-white ">You don't have an account yet? Click <a href="login.php" class="text-blue-500">here</a>  for Singup</p>
                     </div>
                 </form>
             </div>

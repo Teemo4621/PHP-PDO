@@ -28,7 +28,7 @@
             $allowTypes = array('jpg', 'png', 'jpeg', 'gif', 'pdf');
             if (in_array($fileType, $allowTypes)) {
                 if (move_uploaded_file($_FILES['fileImag']['tmp_name'], $targetFilePath)) {
-                    $row = $conn->prepare("UPDATE users SET profile_img= :fileName WHERE id = :user_id");
+                    $row = $conn->prepare("UPDATE users SET profile_img = :fileName WHERE id = :user_id");
                     $row->bindParam(":fileName", $fileName);
                     $row->bindParam(":user_id", $user_id);
                     $row->execute();
