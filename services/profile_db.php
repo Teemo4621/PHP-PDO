@@ -33,22 +33,22 @@
                     $row->bindParam(":user_id", $user_id);
                     $row->execute();
                     if ($row) {
-                        $_SESSION['uploadMsg'] = "The file <b>" . $fileName . "</b> has been uploaded successfully.";
+                        $_SESSION['uploadMsg'] = "<b>" . $fileName . "</b> อัพโหลดเรียบร้อยแล้ว.";
                         header("location: ../pages/account/user_profile.php");
                     } else {
-                        $_SESSION['uploadMsg'] = "File upload failed, please try again.";
+                        $_SESSION['uploadMsg'] = "อัพโหลดไฟล์ไม่ได้ โปรดลองอีกครั้ง";
                         header("location: ../pages/account/user_profile.php");
                     }
                 } else {
-                    $_SESSION['uploadMsg'] = "Sorry, there was an error uploading your file.";
+                    $_SESSION['uploadMsg'] = "ขออภัย เกิดข้อผิดพลาดในการอัปโหลดไฟล์ของคุณ";
                     header("location: ../pages/account/user_profile.php");
                 }
             } else {
-                $_SESSION['uploadMsg'] = "Sorry, only JPG, JPEG, PNG & GIF files are allowed to upload.";
+                $_SESSION['uploadMsg'] = "ขออภัย อนุญาตให้อัปโหลดเฉพาะไฟล์ JPG, JPEG, PNG และ GIF เท่านั้น";
                 header("location: ../pages/account/user_profile.php");
             }
         } else {
-            $_SESSION['uploadMsg'] = "Please select a file to upload.";
+            $_SESSION['uploadMsg'] = "โปรดเลือกไฟล์ที่จะอัปโหลด";
             header("location: ../pages/account/user_profile.php");
         }
     }

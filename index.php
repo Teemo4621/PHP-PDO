@@ -94,25 +94,6 @@ if (isset($_SESSION['user_login'])) {
             </ul>
         </div>
     </div>
-
-    <!--- Container --->
-    <div class="">
-        <div class="">
-            <!--- Swipper Image --->
-            <div class="swiper sliderImage">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide"><img src="image/glenn-carstens-peters-0woyPEJQ7jc-unsplash.jpg" alt=""></div>
-                    <div class="swiper-slide"><img src="image/jeshoots-com-eCktzGjC-iU-unsplash.jpg" alt=""></div>
-                    <div class="swiper-slide"><img src="image/nassim-allia-ot-HSrLNTP0-unsplash.jpg" alt=""></div>
-                </div>
-                <div class="swiper-button-next swiper-btn"></div>
-                <div class="swiper-button-prev swiper-btn"></div>
-                <div class="swiper-pagination"></div>
-            </div>
-        </div>
-    </div>
-    <script src="js/script.js"></script>
-
 </body>
 
 </html>
